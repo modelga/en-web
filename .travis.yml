@@ -1,6 +1,6 @@
 language: node
-node: 
-  - 10
+node:
+  - 12
 script: npm run build
 
 deploy:
@@ -9,5 +9,5 @@ deploy:
   github_token: $GITHUB_TOKEN
   keep_history: true
   local_dir: static
-  on: 
+  on:
     branch: master
