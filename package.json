@@ -1,5 +1,13 @@
 {
   "scripts": {
-    "build": "echo 1"
-  }
+    "build": "node --experimental-modules build.js"
+  },
+  "dependencies": {
+    "handlebars": "^4.2.1",
+    "recursive-readdir": "^2.2.2"
+  },
+  "devDependencies": {
+    "ava": "^2.4.0"
+  },
+  "type": "module"
 }

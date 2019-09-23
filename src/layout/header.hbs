@@ -1,0 +1,14 @@
+{{> c_link page="index.html" name=meta.title}}
+{{#each header.menu}}
+  {{#if links}}
+    <div>
+      {{name}}
+      {{#each links}}
+        {{> c_link wrap="li" args='class="none"'}}
+      {{/each}}
+    </div>
+  {{/if}}
+  {{#if page}}
+    {{> c_link}}
+  {{/if}}
+{{/each}}

@@ -1,0 +1,13 @@
+{
+  "title": "Koszenie",
+  "header": {
+    "menu": [
+      {
+        "name": "Usługi",
+        "links": [{ "name": "Koszenie", "page": "koszenie.html" }]
+      },
+      { "name": "Kontakt", "page": "kontakt.html" }
+    ]
+  },
+  "footer": {}
+}
