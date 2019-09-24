@@ -1,6 +1,6 @@
-import hb from "handlebars";
-import rd from "recursive-readdir";
-import fs from "fs";
+const hb = require("handlebars");
+const rd = require("recursive-readdir");
+const fs = require("fs");
 const path = process.cwd() + "/src";
 
 const fileName = file =>
