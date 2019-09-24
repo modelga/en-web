@@ -1,8 +1,10 @@
-const hb = require("handlebars");
-const rd = require("recursive-readdir");
+const template = require("handlebars");
+const readdir = require("recursive-readdir");
 const fs = require("fs");
 const path = process.cwd() + "/src";
-
+const sass = require("node-sass");
+const autoprefixer = require("autoprefixer");
+const minifyDir = require("minify-dir");
 const fileName = file =>
   file
     .split("/")
@@ -10,7 +12,7 @@ const fileName = file =>
     .split(".")[0];
 
 (async () => {
-  const sourceDir = await rd("./src");
+  const sourceDir = await readdir("./src");
   const [meta] = sourceDir
     .filter(f => f.endsWith("meta.json"))
     .map(a => fs.readFileSync(a))
@@ -30,12 +32,15 @@ const fileName = file =>
     );
   layouts.forEach(file => {
     const [name, content] = [fileName(file), fs.readFileSync(file).toString()];
-    hb.registerPartial(name, content);
+    template.registerPartial(name, content);
   });
 
   components.forEach(file => {
     const [name, content] = [fileName(file), fs.readFileSync(file).toString()];
-    hb.registerPartial("c_" + name, hb.compile(content, { noEscape: true }));
+    template.registerPartial(
+      "c_" + name,
+      template.compile(content, { noEscape: true })
+    );
   });
 
   const [index] = sourceDir
@@ -45,11 +50,24 @@ const fileName = file =>
   sourceDir
     .filter(f => f.includes("/pages"))
     .map(f => {
-      const content = fs.readFileSync(f);
-      const data = hb.compile(index, { explicitPartialContext: false })({
+      const content = fs.readFileSync(f).toString();
+      const data = template.compile(index, { explicitPartialContext: false })({
         meta,
         content
       });
       fs.writeFileSync("./static/" + fileName(f) + ".html", data);
     });
+
+  sourceDir
+    .filter(f => f.includes("main.scss"))
+    .map(f => {
+      const compiled = sass.renderSync({
+        file: f,
+        includePaths: ["node_modules/foundation-sites/scss"]
+      });
+      fs.writeFileSync("./static/style.css", compiled.css);
+    });
+  minifyDir.minifyDirectory("./static", "./static");
+
+  fs.writeFileSync("static/CNAME", process.env.DOMAIN || "test.redoran.net");
 })();

@@ -1,9 +1,14 @@
 {
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "start": "npx reload -d static/"
   },
   "dependencies": {
+    "autoprefixer": "^9.6.1",
+    "foundation-sites": "^6.5.3",
     "handlebars": "^4.2.1",
+    "minify-dir": "^1.0.6",
+    "node-sass": "^4.12.0",
     "recursive-readdir": "^2.2.2"
   },
   "devDependencies": {

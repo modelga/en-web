@@ -1,1 +1,2 @@
-static/*.html
+static/*
+!static/.gitkeep
