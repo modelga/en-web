@@ -9,6 +9,7 @@
     "handlebars": "^4.2.1",
     "minify-dir": "^1.0.6",
     "node-sass": "^4.12.0",
+    "postcss": "^7.0.18",
     "recursive-readdir": "^2.2.2"
   },
   "devDependencies": {

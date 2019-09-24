@@ -1,5 +1,14 @@
-{{ meta.title }}
-{{> meta }}
-{{> header header=meta.header meta=meta}}
+<html>
 
-{{> page data=page}}
+<head>
+  {{> meta }}
+</head>
+
+<body>
+  {{> header header=meta.header meta=meta}}
+
+  {{> page data=page}}
+
+</body>
+
+</html>

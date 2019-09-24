@@ -4,7 +4,9 @@ const fs = require("fs");
 const path = process.cwd() + "/src";
 const sass = require("node-sass");
 const autoprefixer = require("autoprefixer");
+const postcss = require("postcss");
 const minifyDir = require("minify-dir");
+
 const fileName = file =>
   file
     .split("/")
@@ -58,15 +60,26 @@ const fileName = file =>
       fs.writeFileSync("./static/" + fileName(f) + ".html", data);
     });
 
-  sourceDir
-    .filter(f => f.includes("main.scss"))
-    .map(f => {
-      const compiled = sass.renderSync({
-        file: f,
-        includePaths: ["node_modules/foundation-sites/scss"]
-      });
-      fs.writeFileSync("./static/style.css", compiled.css);
-    });
+  await Promise.all(
+    sourceDir
+      .filter(f => f.includes("main.scss"))
+      .map(async f => {
+        const compiled = sass.renderSync({
+          file: f,
+          includePaths: ["node_modules/foundation-sites/scss"]
+        });
+        await postcss([
+          autoprefixer({
+            overrideBrowserslist: ["last 2 version", "> 5%"]
+          })
+        ])
+          .process(compiled.css, { map: false })
+          .then(s => fs.writeFileSync("./static/style.css", s.css))
+          .catch(e => {
+            console.error(e);
+          });
+      })
+  );
   minifyDir.minifyDirectory("./static", "./static");
 
   fs.writeFileSync("static/CNAME", process.env.DOMAIN || "test.redoran.net");
