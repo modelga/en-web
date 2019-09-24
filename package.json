@@ -4,6 +4,7 @@
   },
   "dependencies": {
     "handlebars": "^4.2.1",
+    "node-babel": "^0.1.2",
     "recursive-readdir": "^2.2.2"
   },
   "devDependencies": {
