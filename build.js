@@ -80,7 +80,8 @@ const fileName = file =>
           });
       })
   );
-  minifyDir.minifyDirectory("./static", "./static");
-
-  fs.writeFileSync("static/CNAME", process.env.DOMAIN || "test.redoran.net");
+  if (process.env.CI) {
+    minifyDir.minifyDirectory("./static", "./static");
+    fs.writeFileSync("static/CNAME", process.env.DOMAIN || "test.redoran.net");
+  }
 })();
