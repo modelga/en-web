@@ -12,6 +12,7 @@ const fileName = file =>
     .split("/")
     .slice(-1)[0]
     .split(".")[0];
+const fileNameWithExt = file => file.split("/").slice(-1)[0];
 
 (async () => {
   const sourceDir = await readdir("./src");
@@ -59,7 +60,6 @@ const fileName = file =>
       });
       fs.writeFileSync("./static/" + fileName(f) + ".html", data);
     });
-
   await Promise.all(
     sourceDir
       .filter(f => f.includes("main.scss"))
@@ -80,6 +80,14 @@ const fileName = file =>
           });
       })
   );
+  sourceDir
+    .filter(s => s.startsWith("src/media"))
+    .forEach(f => {
+      const dest = "./static/media/" + f.substr(10);
+      const destDir = dest.substr(0, dest.length - fileNameWithExt(f).length);
+      fs.mkdirSync(destDir, { recursive: true });
+      fs.copyFileSync(f, "./static/media/" + f.substr(10));
+    });
   if (process.env.CI) {
     minifyDir.minifyDirectory("./static", "./static");
     fs.writeFileSync("static/CNAME", process.env.DOMAIN || "test.redoran.net");
